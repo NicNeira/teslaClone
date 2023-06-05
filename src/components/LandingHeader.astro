@@ -3,13 +3,14 @@ import Logo from "./Logo.astro";
 ---
 
 <header
+  id="landing-header"
   class="py-3 px-10 flex items-center fixed top-0 w-full justify-between z-40 text-white"
 >
   <Logo />
 
   <nav>
     <ul
-      class="flex text-sm [&>li>a]:text-white font-medium [&>li>a]:inline-block [&>li>a]:px-4 [&>li>a]:py-2"
+      class="flex text-sm [&>li>a]:transition-colors [&>li>a]:duration-500 [&>li>a]:text-current font-medium [&>li>a]:inline-block [&>li>a]:px-4 [&>li>a]:py-2"
     >
       <li><a href="#">Model S</a></li>
       <li><a href="#">Model 3</a></li>
@@ -22,7 +23,7 @@ import Logo from "./Logo.astro";
 
   <nav class="flex flex-grow justify-end basis-0">
     <ul
-      class="flex text-sm [&>li>a]:text-white font-medium [&>li>a]:inline-block [&>li>a]:px-4 [&>li>a]:py-2"
+      class="flex text-sm [&>li>a]:transition-colors [&>li>a]:duration-500 [&>li>a]:text-current font-medium [&>li>a]:inline-block [&>li>a]:px-4 [&>li>a]:py-2"
     >
       <li><a href="#">Soporte</a></li>
       <li><a href="#">Tienda</a></li>
@@ -31,3 +32,30 @@ import Logo from "./Logo.astro";
     </ul>
   </nav>
 </header>
+
+<script>
+  // $ indicamos que es un elemento del DOM
+  const $header = document.querySelector("#landing-header") as HTMLElement;
+
+  // Intersection Observer para el navbar
+  const observerOptions = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 0.9,
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const { isIntersecting } = entry;
+      if (isIntersecting) {
+        const color = entry.target.getAttribute("data-header-color");
+        $header.style.color = color;
+      }
+    });
+  }, observerOptions);
+
+  const $sections = document.querySelectorAll(".landing-section");
+  $sections.forEach((section) => {
+    observer.observe(section);
+  });
+</script>
